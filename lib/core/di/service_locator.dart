@@ -11,6 +11,7 @@ import '../../presentation/bloc/auth/auth_bloc.dart';
 import '../../presentation/bloc/theme/theme_bloc.dart';
 import '../../core/utils/app_utils.dart';
 import '../../core/services/user_service.dart';
+import '../../core/services/football_player_service.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -35,6 +36,7 @@ Future<void> init() async {
 
   // Services
   sl.registerLazySingleton(() => UserService(firestore: sl()));
+  sl.registerLazySingleton(() => FootballPlayerService(firestore: sl()));
 
   // BLoCs
   sl.registerFactory(() => AuthBloc(authUseCases: sl()));

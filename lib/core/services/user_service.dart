@@ -123,7 +123,7 @@ class UserService {
       final query = await _firestore
           .collection('users')
           .where('email', isGreaterThanOrEqualTo: emailQuery)
-          .where('email', isLessThan: emailQuery + '\uf8ff')
+          .where('email', isLessThan: '$emailQuery\uf8ff')
           .get();
 
       final users = query.docs

@@ -109,6 +109,7 @@ class UserModel extends UserEntity {
     );
   }
 
+  @override
   UserModel copyWith({
     String? id,
     String? email,

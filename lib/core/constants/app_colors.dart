@@ -67,12 +67,10 @@ class AppColors {
     primary: primary,
     secondary: secondary,
     surface: surfaceLight,
-    background: backgroundLight,
     error: error,
     onPrimary: white,
     onSecondary: white,
     onSurface: textPrimaryLight,
-    onBackground: textPrimaryLight,
     onError: white,
   );
 
@@ -80,12 +78,10 @@ class AppColors {
     primary: primaryLight,
     secondary: secondaryLight,
     surface: surfaceDark,
-    background: backgroundDark,
     error: error,
     onPrimary: black,
     onSecondary: black,
     onSurface: textPrimaryDark,
-    onBackground: textPrimaryDark,
     onError: white,
   );
 }

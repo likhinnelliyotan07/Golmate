@@ -203,12 +203,9 @@ class AuthRepositoryImpl implements AuthRepository {
       log("Starting Google Sign-In process");
 
       // Try to get Google user first
-      final GoogleSignInAccount? googleUser = await _googleSignIn.authenticate(
+      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate(
         scopeHint: ['email', 'profile'],
       );
-      if (googleUser == null) {
-        throw Exception('Google sign in was cancelled');
-      }
 
       log("Google user obtained: ${googleUser.email}");
 

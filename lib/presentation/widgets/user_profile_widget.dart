@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/di/service_locator.dart';
 import '../../core/services/user_service.dart';
+import '../../core/services/football_player_service.dart';
 import '../../domain/entities/user_entity.dart';
+import '../../domain/entities/football_player_entity.dart';
 import '../../core/constants/app_text_styles.dart';
 import 'app_card.dart';
 
@@ -19,7 +21,9 @@ class UserProfileWidget extends StatefulWidget {
 
 class _UserProfileWidgetState extends State<UserProfileWidget> {
   final UserService _userService = sl<UserService>();
+  final FootballPlayerService _playerService = sl<FootballPlayerService>();
   UserEntity? _user;
+  FootballPlayerEntity? _player;
   bool _isLoading = false;
   String? _error;
 
@@ -39,11 +43,19 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
     try {
       log("UserProfileWidget: Fetching user data for ID: ${widget.userId}");
 
-      final user = await _userService.getUserById(widget.userId);
+      // Fetch both user and player data
+      final futures = await Future.wait([
+        _userService.getUserById(widget.userId),
+        _playerService.getPlayerByUserId(widget.userId),
+      ]);
+
+      final user = futures[0] as UserEntity?;
+      final player = futures[1] as FootballPlayerEntity?;
 
       if (mounted) {
         setState(() {
           _user = user;
+          _player = player;
           _isLoading = false;
         });
 
@@ -168,14 +180,30 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
         SizedBox(height: 16.h),
 
         // User Information
-        _buildInfoRow('ID', _user!.id),
-        _buildInfoRow('Email', _user!.email),
-        if (_user!.name != null) _buildInfoRow('Name', _user!.name!),
-        if (_user!.phone != null) _buildInfoRow('Phone', _user!.phone!),
-        _buildInfoRow('Email Verified', _user!.isEmailVerified ? 'Yes' : 'No'),
-        _buildInfoRow('Phone Verified', _user!.isPhoneVerified ? 'Yes' : 'No'),
-        _buildInfoRow('Created At', _formatDate(_user!.createdAt)),
-        _buildInfoRow('Updated At', _formatDate(_user!.updatedAt)),
+        Column(
+          children: [
+            _buildInfoRow('ID', _user!.id),
+            _buildInfoRow('Email', _user!.email),
+            if (_user!.name != null) _buildInfoRow('Name', _user!.name!),
+            if (_user!.phone != null) _buildInfoRow('Phone', _user!.phone!),
+            _buildInfoRow(
+              'Email Verified',
+              _user!.isEmailVerified ? 'Yes' : 'No',
+            ),
+            _buildInfoRow(
+              'Phone Verified',
+              _user!.isPhoneVerified ? 'Yes' : 'No',
+            ),
+            _buildInfoRow('Created At', _formatDate(_user!.createdAt)),
+            _buildInfoRow('Updated At', _formatDate(_user!.updatedAt)),
+          ],
+        ),
+
+        // Football Player Information (if available)
+        if (_player != null) ...[
+          SizedBox(height: 24.h),
+          _buildFootballPlayerSection(),
+        ],
 
         SizedBox(height: 16.h),
 
@@ -200,6 +228,123 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildFootballPlayerSection() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.blue[50],
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Colors.blue[200]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.sports_soccer, color: Colors.blue[700], size: 20.w),
+              SizedBox(width: 8.w),
+              Text(
+                'Football Player Profile',
+                style: AppTextStyles.titleSmall.copyWith(
+                  color: Colors.blue[700],
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+
+          // Player Basic Info
+          if (_player!.fullName != null)
+            _buildInfoRow('Full Name', _player!.fullName!),
+          if (_player!.position != null)
+            _buildInfoRow('Position', _player!.position!),
+          if (_player!.age != null)
+            _buildInfoRow('Age', _player!.age.toString()),
+          if (_player!.club != null) _buildInfoRow('Club', _player!.club!),
+          if (_player!.nationality != null)
+            _buildInfoRow('Nationality', _player!.nationality!),
+          if (_player!.preferredFoot != null)
+            _buildInfoRow('Preferred Foot', _player!.preferredFoot!),
+
+          SizedBox(height: 12.h),
+
+          // Player Statistics
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatCard('Goals', _player!.goals.toString()),
+              ),
+              SizedBox(width: 8.w),
+              Expanded(
+                child: _buildStatCard('Assists', _player!.assists.toString()),
+              ),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatCard('Matches', _player!.matches.toString()),
+              ),
+              SizedBox(width: 8.w),
+              Expanded(
+                child: _buildStatCard(
+                  'Rating',
+                  _player!.performanceRating.toStringAsFixed(1),
+                ),
+              ),
+            ],
+          ),
+
+          if (_player!.isGoalkeeper) ...[
+            SizedBox(height: 8.h),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatCard('Saves', _player!.saves.toString()),
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: _buildStatCard(
+                    'Clean Sheets',
+                    _player!.cleanSheets.toString(),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard(String label, String value) {
+    return Container(
+      padding: EdgeInsets.all(8.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: Colors.blue[200]!),
+      ),
+      child: Column(
+        children: [
+          Text(
+            value,
+            style: AppTextStyles.titleMedium.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue[700],
+            ),
+          ),
+          Text(
+            label,
+            style: AppTextStyles.bodySmall.copyWith(color: Colors.blue[600]),
+          ),
+        ],
+      ),
     );
   }
 
@@ -245,9 +390,7 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                 Text('Total Goals: ${stats['totalGoals'] ?? 0}'),
                 Text('Total Achievements: ${stats['totalAchievements'] ?? 0}'),
                 if (stats['userCreatedAt'] != null)
-                  Text(
-                    'Member Since: ${_formatDate(stats['userCreatedAt'].toDate())}',
-                  ),
+                  Text('Member Since: ${stats['userCreatedAt']}'),
               ],
             ),
             actions: [

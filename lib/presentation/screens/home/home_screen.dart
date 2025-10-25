@@ -9,6 +9,7 @@ import '../../bloc/auth/auth_event.dart';
 import '../../bloc/auth/auth_state.dart';
 import '../../widgets/widgets.dart';
 import '../../widgets/user_profile_widget.dart';
+import '../../widgets/profile_drawer.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../auth/login_screen.dart';
 import '../settings/settings_screen.dart';
@@ -83,183 +84,185 @@ class HomeScreen extends StatelessWidget {
         ? user.email!.trim().split('@')[0]
         : "User";
     log("user profile image url: ${user.profileImageUrl}");
-    return Padding(
-      padding: EdgeInsets.all(24.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Welcome Card
-          AppCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30.r,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      backgroundImage: user.profileImageUrl != null
-                          ? NetworkImage(user.profileImageUrl!)
-                          : null,
-                      child: user.profileImageUrl == null
-                          ? Text(
-                              userName.substring(0, 1).toUpperCase(),
-                              style: AppTextStyles.headlineLarge.copyWith(
-                                color: Colors.white,
-                              ),
-                            )
-                          : null,
-                    ),
-                    SizedBox(width: 16.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${'home.welcome'.tr()}, ${user.name ?? 'User'}!',
-                            style: AppTextStyles.headlineMedium,
-                          ),
-                          SizedBox(height: 4.h),
-                          Text(user.email, style: AppTextStyles.bodyMedium),
-                        ],
+    return Scaffold(
+      drawer: ProfileDrawer(userId: user.id),
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.all(24.w),
+          children: [
+            // Welcome Card
+            AppCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 30.r,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        backgroundImage: user.profileImageUrl != null
+                            ? NetworkImage(user.profileImageUrl!)
+                            : null,
+                        child: user.profileImageUrl == null
+                            ? Text(
+                                userName.substring(0, 1).toUpperCase(),
+                                style: AppTextStyles.headlineLarge.copyWith(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : null,
                       ),
+                      SizedBox(width: 16.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${'home.welcome'.tr()}, ${user.name ?? 'User'}!',
+                              style: AppTextStyles.headlineMedium,
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(user.email, style: AppTextStyles.bodyMedium),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'Welcome to Goal Mate! Start tracking your goals and achieving your dreams.',
+                    style: AppTextStyles.bodyMedium,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 24.h),
+
+            // User Profile from Firestore
+            UserProfileWidget(userId: user.id),
+            SizedBox(height: 24.h),
+
+            // Quick Actions
+            Text('Quick Actions', style: AppTextStyles.titleLarge),
+            SizedBox(height: 16.h),
+
+            Row(
+              children: [
+                Expanded(
+                  child: AppCard(
+                    onTap: () {
+                      // TODO: Navigate to goals screen
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Goals feature coming soon!'),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.flag,
+                          size: 32.w,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        SizedBox(height: 8.h),
+                        Text('Goals', style: AppTextStyles.titleMedium),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-                SizedBox(height: 16.h),
-                Text(
-                  'Welcome to Goal Mate! Start tracking your goals and achieving your dreams.',
-                  style: AppTextStyles.bodyMedium,
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: AppCard(
+                    onTap: () {
+                      // TODO: Navigate to progress screen
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Progress tracking coming soon!'),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.trending_up,
+                          size: 32.w,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        SizedBox(height: 8.h),
+                        Text('Progress', style: AppTextStyles.titleMedium),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-          SizedBox(height: 24.h),
+            SizedBox(height: 16.h),
 
-          // User Profile from Firestore
-          UserProfileWidget(userId: user.id),
-          SizedBox(height: 24.h),
-
-          // Quick Actions
-          Text('Quick Actions', style: AppTextStyles.titleLarge),
-          SizedBox(height: 16.h),
-
-          Row(
-            children: [
-              Expanded(
-                child: AppCard(
-                  onTap: () {
-                    // TODO: Navigate to goals screen
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Goals feature coming soon!'),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.flag,
-                        size: 32.w,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      SizedBox(height: 8.h),
-                      Text('Goals', style: AppTextStyles.titleMedium),
-                    ],
+            Row(
+              children: [
+                Expanded(
+                  child: AppCard(
+                    onTap: () {
+                      // TODO: Navigate to achievements screen
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Achievements coming soon!'),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.emoji_events,
+                          size: 32.w,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        SizedBox(height: 8.h),
+                        Text('Achievements', style: AppTextStyles.titleMedium),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: AppCard(
-                  onTap: () {
-                    // TODO: Navigate to progress screen
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Progress tracking coming soon!'),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.trending_up,
-                        size: 32.w,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      SizedBox(height: 8.h),
-                      Text('Progress', style: AppTextStyles.titleMedium),
-                    ],
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: AppCard(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsScreen(),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.settings,
+                          size: 32.w,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        SizedBox(height: 8.h),
+                        Text('Settings', style: AppTextStyles.titleMedium),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
+              ],
+            ),
+            const Spacer(),
 
-          Row(
-            children: [
-              Expanded(
-                child: AppCard(
-                  onTap: () {
-                    // TODO: Navigate to achievements screen
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Achievements coming soon!'),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.emoji_events,
-                        size: 32.w,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      SizedBox(height: 8.h),
-                      Text('Achievements', style: AppTextStyles.titleMedium),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: AppCard(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SettingsScreen(),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.settings,
-                        size: 32.w,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      SizedBox(height: 8.h),
-                      Text('Settings', style: AppTextStyles.titleMedium),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const Spacer(),
-
-          // Logout Button
-          AppButton(
-            text: 'auth.logout'.tr(),
-            onPressed: () {
-              _showLogoutDialog(context);
-            },
-            isOutlined: true,
-            icon: Icons.logout,
-          ),
-        ],
+            // Logout Button
+            AppButton(
+              text: 'auth.logout'.tr(),
+              onPressed: () {
+                _showLogoutDialog(context);
+              },
+              isOutlined: true,
+              icon: Icons.logout,
+            ),
+          ],
+        ),
       ),
     );
   }
