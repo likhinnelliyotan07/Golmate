@@ -1,0 +1,79 @@
+{
+    "app": {
+        "name": "Goal Mate",
+        "welcome": "Bienvenido",
+        "loading": "Cargando...",
+        "error": "Error",
+        "success": "Éxito",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "save": "Guardar",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "back": "Atrás",
+        "next": "Siguiente",
+        "done": "Hecho"
+    },
+    "auth": {
+        "login": "Iniciar Sesión",
+        "signup": "Registrarse",
+        "logout": "Cerrar Sesión",
+        "email": "Correo Electrónico",
+        "password": "Contraseña",
+        "confirmPassword": "Confirmar Contraseña",
+        "phone": "Número de Teléfono",
+        "name": "Nombre Completo",
+        "forgotPassword": "¿Olvidaste tu contraseña?",
+        "resetPassword": "Restablecer Contraseña",
+        "sendResetLink": "Enviar Enlace de Restablecimiento",
+        "backToLogin": "Volver al Inicio de Sesión",
+        "dontHaveAccount": "¿No tienes una cuenta?",
+        "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+        "signInWithGoogle": "Iniciar sesión con Google",
+        "signUpWithGoogle": "Registrarse con Google",
+        "or": "O",
+        "loginSuccess": "Inicio de sesión exitoso",
+        "signupSuccess": "Cuenta creada exitosamente",
+        "logoutSuccess": "Sesión cerrada exitosamente",
+        "resetLinkSent": "Enlace de restablecimiento enviado a tu correo",
+        "passwordResetSuccess": "Contraseña restablecida exitosamente"
+    },
+    "validation": {
+        "emailRequired": "El correo electrónico es requerido",
+        "emailInvalid": "Por favor ingresa un correo electrónico válido",
+        "passwordRequired": "La contraseña es requerida",
+        "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+        "passwordTooLong": "La contraseña debe tener menos de 50 caracteres",
+        "passwordsDoNotMatch": "Las contraseñas no coinciden",
+        "nameRequired": "El nombre es requerido",
+        "nameTooShort": "El nombre debe tener al menos 2 caracteres",
+        "nameTooLong": "El nombre debe tener menos de 50 caracteres",
+        "phoneRequired": "El número de teléfono es requerido",
+        "phoneInvalid": "Por favor ingresa un número de teléfono válido"
+    },
+    "home": {
+        "welcome": "Bienvenido",
+        "profile": "Perfil",
+        "settings": "Configuración",
+        "theme": "Tema",
+        "language": "Idioma",
+        "logout": "Cerrar Sesión"
+    },
+    "theme": {
+        "light": "Claro",
+        "dark": "Oscuro",
+        "system": "Sistema"
+    },
+    "errors": {
+        "networkError": "Error de red. Por favor verifica tu conexión.",
+        "serverError": "Error del servidor. Por favor intenta más tarde.",
+        "unknownError": "Ocurrió un error desconocido",
+        "authFailed": "Falló la autenticación",
+        "userNotFound": "Usuario no encontrado",
+        "emailAlreadyInUse": "El correo electrónico ya está en uso",
+        "weakPassword": "La contraseña es muy débil",
+        "invalidEmail": "Dirección de correo electrónico inválida",
+        "userDisabled": "La cuenta de usuario ha sido deshabilitada",
+        "tooManyRequests": "Demasiadas solicitudes. Por favor intenta más tarde"
+    }
+}
