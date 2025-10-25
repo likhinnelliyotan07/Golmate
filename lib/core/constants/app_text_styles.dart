@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'app_colors.dart';
 
 class AppTextStyles {
@@ -7,161 +8,161 @@ class AppTextStyles {
   static const String secondaryFont = 'OpenSans';
 
   // Display Styles
-  static const TextStyle displayLarge = TextStyle(
-    fontSize: 32,
+  static TextStyle get displayLarge => TextStyle(
+    fontSize: 32.sp,
     fontWeight: FontWeight.bold,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
-  static const TextStyle displayMedium = TextStyle(
-    fontSize: 28,
+  static TextStyle get displayMedium => TextStyle(
+    fontSize: 28.sp,
     fontWeight: FontWeight.bold,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
-  static const TextStyle displaySmall = TextStyle(
-    fontSize: 24,
+  static TextStyle get displaySmall => TextStyle(
+    fontSize: 24.sp,
     fontWeight: FontWeight.bold,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
   // Headline Styles
-  static const TextStyle headlineLarge = TextStyle(
-    fontSize: 22,
+  static TextStyle get headlineLarge => TextStyle(
+    fontSize: 22.sp,
     fontWeight: FontWeight.w600,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
-  static const TextStyle headlineMedium = TextStyle(
-    fontSize: 20,
+  static TextStyle get headlineMedium => TextStyle(
+    fontSize: 20.sp,
     fontWeight: FontWeight.w600,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
-  static const TextStyle headlineSmall = TextStyle(
-    fontSize: 18,
+  static TextStyle get headlineSmall => TextStyle(
+    fontSize: 18.sp,
     fontWeight: FontWeight.w600,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
   // Title Styles
-  static const TextStyle titleLarge = TextStyle(
-    fontSize: 16,
+  static TextStyle get titleLarge => TextStyle(
+    fontSize: 16.sp,
     fontWeight: FontWeight.w500,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
-  static const TextStyle titleMedium = TextStyle(
-    fontSize: 14,
+  static TextStyle get titleMedium => TextStyle(
+    fontSize: 14.sp,
     fontWeight: FontWeight.w500,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
-  static const TextStyle titleSmall = TextStyle(
-    fontSize: 12,
+  static TextStyle get titleSmall => TextStyle(
+    fontSize: 12.sp,
     fontWeight: FontWeight.w500,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
   // Body Styles
-  static const TextStyle bodyLarge = TextStyle(
-    fontSize: 16,
+  static TextStyle get bodyLarge => TextStyle(
+    fontSize: 16.sp,
     fontWeight: FontWeight.normal,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
-  static const TextStyle bodyMedium = TextStyle(
-    fontSize: 14,
+  static TextStyle get bodyMedium => TextStyle(
+    fontSize: 14.sp,
     fontWeight: FontWeight.normal,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
-  static const TextStyle bodySmall = TextStyle(
-    fontSize: 12,
+  static TextStyle get bodySmall => TextStyle(
+    fontSize: 12.sp,
     fontWeight: FontWeight.normal,
     fontFamily: primaryFont,
     color: AppColors.textSecondaryLight,
   );
 
   // Label Styles
-  static const TextStyle labelLarge = TextStyle(
-    fontSize: 14,
+  static TextStyle get labelLarge => TextStyle(
+    fontSize: 14.sp,
     fontWeight: FontWeight.w500,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
-  static const TextStyle labelMedium = TextStyle(
-    fontSize: 12,
+  static TextStyle get labelMedium => TextStyle(
+    fontSize: 12.sp,
     fontWeight: FontWeight.w500,
     fontFamily: primaryFont,
     color: AppColors.textPrimaryLight,
   );
 
-  static const TextStyle labelSmall = TextStyle(
-    fontSize: 10,
+  static TextStyle get labelSmall => TextStyle(
+    fontSize: 10.sp,
     fontWeight: FontWeight.w500,
     fontFamily: primaryFont,
     color: AppColors.textSecondaryLight,
   );
 
   // Button Styles
-  static const TextStyle buttonLarge = TextStyle(
-    fontSize: 16,
+  static TextStyle get buttonLarge => TextStyle(
+    fontSize: 16.sp,
     fontWeight: FontWeight.w600,
     fontFamily: primaryFont,
     color: AppColors.white,
   );
 
-  static const TextStyle buttonMedium = TextStyle(
-    fontSize: 14,
+  static TextStyle get buttonMedium => TextStyle(
+    fontSize: 14.sp,
     fontWeight: FontWeight.w600,
     fontFamily: primaryFont,
     color: AppColors.white,
   );
 
-  static const TextStyle buttonSmall = TextStyle(
-    fontSize: 12,
+  static TextStyle get buttonSmall => TextStyle(
+    fontSize: 12.sp,
     fontWeight: FontWeight.w600,
     fontFamily: primaryFont,
     color: AppColors.white,
   );
 
   // Custom Styles
-  static const TextStyle welcomeText = TextStyle(
-    fontSize: 24,
+  static TextStyle get welcomeText => TextStyle(
+    fontSize: 24.sp,
     fontWeight: FontWeight.bold,
     fontFamily: primaryFont,
     color: AppColors.primary,
   );
 
-  static const TextStyle errorText = TextStyle(
-    fontSize: 12,
+  static TextStyle get errorText => TextStyle(
+    fontSize: 12.sp,
     fontWeight: FontWeight.normal,
     fontFamily: primaryFont,
     color: AppColors.error,
   );
 
-  static const TextStyle successText = TextStyle(
-    fontSize: 12,
+  static TextStyle get successText => TextStyle(
+    fontSize: 12.sp,
     fontWeight: FontWeight.normal,
     fontFamily: primaryFont,
     color: AppColors.success,
   );
 
-  static const TextStyle linkText = TextStyle(
-    fontSize: 14,
+  static TextStyle get linkText => TextStyle(
+    fontSize: 14.sp,
     fontWeight: FontWeight.w500,
     fontFamily: primaryFont,
     color: AppColors.primary,

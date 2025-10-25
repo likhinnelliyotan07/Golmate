@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:goal_mate/core/constants/app_text_styles.dart';
 import 'package:goal_mate/presentation/bloc/auth/auth_bloc.dart';
 import 'package:goal_mate/presentation/bloc/auth/auth_event.dart';
 import 'package:goal_mate/presentation/bloc/auth/auth_state.dart';
@@ -23,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _textController;
   late AnimationController _taglineController;
   late AnimationController _backgroundController;
+  bool _isDisposed = false;
 
   late Animation<double> _logoScale;
   late Animation<double> _logoRotation;
@@ -116,28 +119,113 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _startAnimations() {
-    _backgroundController.forward();
+    if (!_isDisposed) {
+      try {
+        _backgroundController.forward();
+      } catch (e) {
+        print('Error starting background animation: $e');
+      }
+    }
     Future.delayed(const Duration(milliseconds: 300), () {
-      _logoController.forward();
+      if (!_isDisposed) {
+        try {
+          _logoController.forward();
+        } catch (e) {
+          print('Error starting logo animation: $e');
+        }
+      }
     });
     Future.delayed(const Duration(milliseconds: 800), () {
-      _textController.forward();
+      if (!_isDisposed) {
+        try {
+          _textController.forward();
+        } catch (e) {
+          print('Error starting text animation: $e');
+        }
+      }
     });
     Future.delayed(const Duration(milliseconds: 1200), () {
-      _taglineController.forward();
+      if (!_isDisposed) {
+        try {
+          _taglineController.forward();
+        } catch (e) {
+          print('Error starting tagline animation: $e');
+        }
+      }
     });
   }
 
   void _navigateAfterDelay() {
     Timer(const Duration(milliseconds: 3000), () {
       if (mounted) {
-        context.read<AuthBloc>().add(AuthCheckRequested());
+        _playExitAnimation();
+      }
+    });
+
+    // Fallback timeout to ensure navigation happens
+    Timer(const Duration(milliseconds: 5000), () {
+      if (mounted && !_isDisposed) {
+        print('Splash: Fallback timeout - forcing navigation to LoginScreen');
+        // Force navigation to login screen if still on splash
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
       }
     });
   }
 
+  void _playExitAnimation() async {
+    print('Splash: Starting exit animation');
+
+    // Check if controllers are still active before animating
+    if (!_isDisposed) {
+      try {
+        _logoController.reverse();
+      } catch (e) {
+        print('Error reversing logo animation: $e');
+      }
+    }
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    if (!_isDisposed) {
+      try {
+        _textController.reverse();
+      } catch (e) {
+        print('Error reversing text animation: $e');
+      }
+    }
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    if (!_isDisposed) {
+      try {
+        _taglineController.reverse();
+      } catch (e) {
+        print('Error reversing tagline animation: $e');
+      }
+    }
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    if (!_isDisposed) {
+      try {
+        _backgroundController.reverse();
+      } catch (e) {
+        print('Error reversing background animation: $e');
+      }
+    }
+
+    // Wait for animations to complete
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    // Check auth state after animation completes
+    if (mounted && !_isDisposed) {
+      print('Splash: Requesting auth check');
+      context.read<AuthBloc>().add(AuthCheckRequested());
+    }
+  }
+
   @override
   void dispose() {
+    _isDisposed = true;
     _logoController.dispose();
     _textController.dispose();
     _taglineController.dispose();
@@ -149,15 +237,22 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
+        print('Splash: Auth state changed to ${state.runtimeType}');
+
         if (state is AuthSuccess) {
+          print('Splash: Navigating to HomeScreen');
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const HomeScreen()),
           );
-        } else if (state is AuthError || state is AuthInitial) {
+        } else if (state is AuthError ||
+            state is AuthInitial ||
+            state is AuthLoggedOut) {
+          print('Splash: Navigating to LoginScreen');
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const LoginScreen()),
           );
         }
+        // Note: AuthLoading state is handled by showing the splash screen content
       },
       child: Scaffold(
         body: AnimatedBuilder(
@@ -171,10 +266,10 @@ class _SplashScreenState extends State<SplashScreen>
                   colors: [
                     const Color(
                       0xFF4A90E2,
-                    ).withOpacity(_backgroundOpacity.value),
+                    ).withAlpha((_backgroundOpacity.value * 255).toInt()),
                     const Color(
                       0xFFFF6B35,
-                    ).withOpacity(_backgroundOpacity.value),
+                    ).withAlpha((_backgroundOpacity.value * 255).toInt()),
                   ],
                 ),
               ),
@@ -196,7 +291,7 @@ class _SplashScreenState extends State<SplashScreen>
                       },
                     ),
 
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40.h),
 
                     // Animated Brand Name
                     AnimatedBuilder(
@@ -209,7 +304,7 @@ class _SplashScreenState extends State<SplashScreen>
                       },
                     ),
 
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20.h),
 
                     // Animated Tagline
                     AnimatedBuilder(
@@ -233,16 +328,16 @@ class _SplashScreenState extends State<SplashScreen>
 
   Widget _buildAnimatedLogo() {
     return Container(
-      width: 120,
-      height: 120,
+      width: 120.w,
+      height: 120.h,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            blurRadius: 20.r,
+            offset: Offset(0, 10.h),
           ),
         ],
       ),
@@ -272,8 +367,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   Widget _buildSoccerBall() {
     return Container(
-      width: 80,
-      height: 80,
+      width: 80.w,
+      height: 80.h,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: const LinearGradient(
@@ -287,7 +382,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Widget _buildArrowAndStar() {
-    return CustomPaint(size: const Size(60, 60), painter: ArrowStarPainter());
+    return CustomPaint(size: Size(60.w, 60.h), painter: ArrowStarPainter());
   }
 
   Widget _buildBrandName() {
@@ -298,18 +393,14 @@ class _SplashScreenState extends State<SplashScreen>
           children: [
             Text(
               'Goal',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+              style: AppTextStyles.displayLarge.copyWith(
                 color: const Color(0xFF1E3A8A),
                 letterSpacing: 1.2,
               ),
             ),
             Text(
               ' Mate',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+              style: AppTextStyles.displayLarge.copyWith(
                 color: const Color(0xFFFF6B35),
                 letterSpacing: 1.2,
               ),
@@ -317,13 +408,13 @@ class _SplashScreenState extends State<SplashScreen>
           ],
         ),
         Container(
-          width: 120,
-          height: 2,
+          width: 120.w,
+          height: 2.h,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [const Color(0xFF1E3A8A), const Color(0xFFFF6B35)],
             ),
-            borderRadius: BorderRadius.circular(1),
+            borderRadius: BorderRadius.circular(1.r),
           ),
         ),
       ],
@@ -333,9 +424,7 @@ class _SplashScreenState extends State<SplashScreen>
   Widget _buildTagline() {
     return Text(
       'Dream. Strive. Achieve.',
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
+      style: AppTextStyles.titleLarge.copyWith(
         color: Colors.white,
         letterSpacing: 0.8,
       ),
@@ -370,7 +459,6 @@ class SoccerBallPainter extends CustomPainter {
     Paint strokePaint,
   ) {
     // Simplified soccer ball pattern with pentagons and hexagons
-    final path = Path();
 
     // Draw pentagons (dark blue)
     fillPaint.color = const Color(0xFF1E3A8A);

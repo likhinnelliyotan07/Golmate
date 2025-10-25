@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -6,8 +8,8 @@ import '../../bloc/auth/auth_event.dart';
 import '../../bloc/auth/auth_state.dart';
 import '../../widgets/widgets.dart';
 import '../../../core/utils/validation_handler.dart';
-import '../home/home_screen.dart';
 import 'login_screen.dart';
+import 'profile_completion_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -47,10 +49,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           if (state is AuthSuccess) {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
+              MaterialPageRoute(
+                builder: (context) => const ProfileCompletionScreen(),
+              ),
               (route) => false,
             );
           } else if (state is AuthError) {
+            log(state.message);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),

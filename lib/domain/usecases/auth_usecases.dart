@@ -10,6 +10,10 @@ class AuthUseCases {
     return await repository.getCurrentUser();
   }
 
+  Future<UserEntity?> getUserFromFirestore(String userId) async {
+    return await repository.getUserFromFirestore(userId);
+  }
+
   Future<UserEntity> signInWithEmail(String email, String password) async {
     return await repository.signInWithEmail(email, password);
   }

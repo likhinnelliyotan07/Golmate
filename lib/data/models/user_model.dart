@@ -14,17 +14,27 @@ class UserModel extends UserEntity {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json['id'] as String,
-      email: json['email'] as String,
-      name: json['name'] as String?,
-      phone: json['phone'] as String?,
-      profileImageUrl: json['profileImageUrl'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-      isEmailVerified: json['isEmailVerified'] as bool? ?? false,
-      isPhoneVerified: json['isPhoneVerified'] as bool? ?? false,
-    );
+    try {
+      return UserModel(
+        id: json['id']?.toString() ?? '',
+        email: json['email']?.toString() ?? '',
+        name: json['name']?.toString(),
+        phone: json['phone']?.toString(),
+        profileImageUrl: json['profileImageUrl']?.toString(),
+        createdAt: json['createdAt'] != null
+            ? DateTime.parse(json['createdAt'].toString())
+            : DateTime.now(),
+        updatedAt: json['updatedAt'] != null
+            ? DateTime.parse(json['updatedAt'].toString())
+            : DateTime.now(),
+        isEmailVerified: json['isEmailVerified'] == true,
+        isPhoneVerified: json['isPhoneVerified'] == true,
+      );
+    } catch (e) {
+      print('Error parsing UserModel from JSON: $e');
+      print('JSON data: $json');
+      rethrow;
+    }
   }
 
   factory UserModel.create({

@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_event.dart';
 import '../../bloc/auth/auth_state.dart';
 import '../../widgets/widgets.dart';
+import '../../../core/constants/app_text_styles.dart';
 import '../../../core/utils/validation_handler.dart';
 import '../home/home_screen.dart';
 import 'signup_screen.dart';
@@ -42,6 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
               (route) => false,
             );
           } else if (state is AuthError) {
+            log(state.message);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
@@ -52,137 +57,154 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(24.r),
             child: Form(
               key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Spacer(),
-                  // Logo and Title
-                  Column(
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight:
+                        MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom -
+                        48.h,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Icon(
-                        Icons.sports_soccer,
-                        size: 80,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'app.name'.tr(),
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'auth.login'.tr(),
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 48),
+                      SizedBox(height: 40.h),
 
-                  // Email Field
-                  AppTextField(
-                    label: 'auth.email'.tr(),
-                    hint: 'auth.email'.tr(),
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    prefixIcon: const Icon(Icons.email_outlined),
-                    validator: (value) {
-                      final error = ValidationHandler.validateEmail(value);
-                      return error?.tr();
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Password Field
-                  AppTextField(
-                    label: 'auth.password'.tr(),
-                    hint: 'auth.password'.tr(),
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    prefixIcon: const Icon(Icons.lock_outlined),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Forgot Password
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ForgotPasswordScreen(),
+                      // Logo and Title
+                      Column(
+                        children: [
+                          Image.asset(
+                            'assets/images/app_logo.png',
+                            width: 120.r,
+                            height: 120.r,
+                            fit: BoxFit.cover,
                           ),
-                        );
-                      },
-                      child: Text('auth.forgotPassword'.tr()),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Login Button
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      return AppButton(
-                        text: 'auth.login'.tr(),
-                        onPressed: state is AuthLoading ? null : _handleLogin,
-                        isLoading: state is AuthLoading,
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Divider
-                  Row(
-                    children: [
-                      const Expanded(child: Divider()),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text('auth.or'.tr()),
+                          SizedBox(height: 16.h),
+                          Text(
+                            'app.name'.tr(),
+                            style: AppTextStyles.displayMedium,
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            'auth.login'.tr(),
+                            style: AppTextStyles.headlineMedium,
+                          ),
+                        ],
                       ),
-                      const Expanded(child: Divider()),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
+                      SizedBox(height: 48.h),
 
-                  // Google Sign In Button
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      return AppButton(
-                        text: 'auth.signInWithGoogle'.tr(),
-                        onPressed: state is AuthLoading
-                            ? null
-                            : _handleGoogleSignIn,
-                        isLoading: state is AuthLoading,
-                        isOutlined: true,
-                        icon: Icons.g_mobiledata,
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 24),
+                      // Email Field
+                      AppTextField(
+                        label: 'auth.email'.tr(),
+                        hint: 'auth.email'.tr(),
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: const Icon(Icons.email_outlined),
+                        validator: (value) {
+                          final error = ValidationHandler.validateEmail(value);
+                          return error?.tr();
+                        },
+                      ),
+                      SizedBox(height: 16.h),
 
-                  // Sign Up Link
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('auth.dontHaveAccount'.tr()),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignUpScreen(),
-                            ),
+                      // Password Field
+                      AppTextField(
+                        label: 'auth.password'.tr(),
+                        hint: 'auth.password'.tr(),
+                        controller: _passwordController,
+                        obscureText: _obscurePassword,
+                        prefixIcon: const Icon(Icons.lock_outlined),
+                      ),
+                      SizedBox(height: 8.h),
+
+                      // Forgot Password
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordScreen(),
+                              ),
+                            );
+                          },
+                          child: Text('auth.forgotPassword'.tr()),
+                        ),
+                      ),
+                      SizedBox(height: 24.h),
+
+                      // Login Button
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          return AppButton(
+                            text: 'auth.login'.tr(),
+                            onPressed: state is AuthLoading
+                                ? null
+                                : _handleLogin,
+                            isLoading: state is AuthLoading,
                           );
                         },
-                        child: Text('auth.signup'.tr()),
                       ),
+                      SizedBox(height: 16.h),
+
+                      // Divider
+                      Row(
+                        children: [
+                          const Expanded(child: Divider()),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: Text('auth.or'.tr()),
+                          ),
+                          const Expanded(child: Divider()),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+
+                      // Google Sign In Button
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          return AppButton(
+                            text: 'auth.signInWithGoogle'.tr(),
+                            onPressed: state is AuthLoading
+                                ? null
+                                : _handleGoogleSignIn,
+                            isLoading: state is AuthLoading,
+                            isOutlined: true,
+                            icon: Icons.g_mobiledata,
+                          );
+                        },
+                      ),
+                      SizedBox(height: 24.h),
+
+                      // Sign Up Link
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('auth.dontHaveAccount'.tr()),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SignUpScreen(),
+                                ),
+                              );
+                            },
+                            child: Text('auth.signup'.tr()),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 40.h),
                     ],
                   ),
-                  const Spacer(),
-                ],
+                ),
               ),
             ),
           ),

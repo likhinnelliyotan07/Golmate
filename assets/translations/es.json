@@ -64,16 +64,41 @@
         "dark": "Oscuro",
         "system": "Sistema"
     },
+    "profile": {
+        "welcome": "¡Bienvenido a Goal Mate!",
+        "completionMessage": "Completemos tu perfil para comenzar",
+        "fullName": "Nombre Completo",
+        "fullNameHint": "Ingresa tu nombre completo",
+        "phoneNumber": "Número de Teléfono",
+        "phoneNumberHint": "Ingresa tu número de teléfono (opcional)",
+        "completeProfile": "Completar Perfil",
+        "skipForNow": "Omitir por ahora"
+    },
     "errors": {
         "networkError": "Error de red. Por favor verifica tu conexión.",
         "serverError": "Error del servidor. Por favor intenta más tarde.",
         "unknownError": "Ocurrió un error desconocido",
-        "authFailed": "Falló la autenticación",
-        "userNotFound": "Usuario no encontrado",
-        "emailAlreadyInUse": "El correo electrónico ya está en uso",
-        "weakPassword": "La contraseña es muy débil",
-        "invalidEmail": "Dirección de correo electrónico inválida",
-        "userDisabled": "La cuenta de usuario ha sido deshabilitada",
-        "tooManyRequests": "Demasiadas solicitudes. Por favor intenta más tarde"
+        "timeoutError": "La solicitud expiró. Por favor intenta de nuevo.",
+        "permissionDenied": "Permiso denegado. Por favor intenta de nuevo.",
+        "invalidCredentials": "Correo electrónico o contraseña inválidos. Por favor verifica tus credenciales.",
+        "userNotFound": "No se encontró una cuenta con este correo electrónico.",
+        "wrongPassword": "Contraseña incorrecta. Por favor intenta de nuevo.",
+        "emailAlreadyInUse": "Ya existe una cuenta con este correo electrónico.",
+        "invalidEmail": "Por favor ingresa un correo electrónico válido.",
+        "weakPassword": "La contraseña es muy débil. Por favor elige una contraseña más fuerte.",
+        "userDisabled": "Esta cuenta ha sido deshabilitada. Por favor contacta soporte.",
+        "tooManyRequests": "Demasiados intentos fallidos. Por favor intenta más tarde.",
+        "operationNotAllowed": "Este método de inicio de sesión no está permitido.",
+        "requiresRecentLogin": "Por favor inicia sesión de nuevo para continuar.",
+        "accountExistsWithDifferentCredential": "Ya existe una cuenta con este correo usando un método de inicio de sesión diferente.",
+        "invalidVerificationCode": "Código de verificación inválido. Por favor intenta de nuevo.",
+        "invalidVerificationId": "ID de verificación inválido. Por favor solicita un nuevo código.",
+        "credentialAlreadyInUse": "Esta credencial ya está asociada con otra cuenta.",
+        "invalidPhoneNumber": "Por favor ingresa un número de teléfono válido.",
+        "missingPhoneNumber": "El número de teléfono es requerido.",
+        "quotaExceeded": "Cuota de SMS excedida. Por favor intenta más tarde.",
+        "invalidUserToken": "Tu sesión ha expirado. Por favor inicia sesión de nuevo.",
+        "userTokenExpired": "Tu sesión ha expirado. Por favor inicia sesión de nuevo.",
+        "invalidApiKey": "Error de configuración. Por favor contacta soporte."
     }
 }

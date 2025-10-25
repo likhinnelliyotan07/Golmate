@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../../core/constants/app_constants.dart';
@@ -36,19 +37,19 @@ class AppButton extends StatelessWidget {
 
     return SizedBox(
       width: width,
-      height: height ?? AppConstants.buttonHeight,
+      height: height ?? AppConstants.buttonHeight.h,
       child: isOutlined
           ? OutlinedButton(
               onPressed: isLoading ? null : onPressed,
               style: OutlinedButton.styleFrom(
                 foregroundColor: textColor ?? AppColors.primary,
-                side: BorderSide(color: AppColors.primary, width: 1.5),
+                side: BorderSide(color: AppColors.primary, width: 1.5.w),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
-                    AppConstants.borderRadius,
+                    AppConstants.borderRadius.r,
                   ),
                 ),
-                padding: padding ?? const EdgeInsets.symmetric(horizontal: 16),
+                padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
               ),
               child: _buildButtonContent(theme, isDark),
             )
@@ -60,10 +61,10 @@ class AppButton extends StatelessWidget {
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
-                    AppConstants.borderRadius,
+                    AppConstants.borderRadius.r,
                   ),
                 ),
-                padding: padding ?? const EdgeInsets.symmetric(horizontal: 16),
+                padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
               ),
               child: _buildButtonContent(theme, isDark),
             ),
@@ -73,10 +74,10 @@ class AppButton extends StatelessWidget {
   Widget _buildButtonContent(ThemeData theme, bool isDark) {
     if (isLoading) {
       return SizedBox(
-        width: 20,
-        height: 20,
+        width: 20.w,
+        height: 20.h,
         child: CircularProgressIndicator(
-          strokeWidth: 2,
+          strokeWidth: 2.w,
           valueColor: AlwaysStoppedAnimation<Color>(
             isOutlined ? AppColors.primary : AppColors.white,
           ),
@@ -88,8 +89,8 @@ class AppButton extends StatelessWidget {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18),
-          const SizedBox(width: 8),
+          Icon(icon, size: 18.w),
+          SizedBox(width: 8.w),
           Text(text, style: AppTextStyles.buttonMedium),
         ],
       );

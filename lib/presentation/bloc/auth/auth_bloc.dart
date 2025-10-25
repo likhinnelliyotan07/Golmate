@@ -1,10 +1,15 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/usecases/auth_usecases.dart';
+import '../../../core/utils/firebase_auth_error_handler.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthUseCases authUseCases;
+  StreamSubscription? _authStateSubscription;
 
   AuthBloc({required this.authUseCases}) : super(AuthInitial()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
@@ -17,6 +22,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<PasswordUpdateRequested>(_onPasswordUpdateRequested);
     on<ProfileUpdateRequested>(_onProfileUpdateRequested);
     on<AccountDeletionRequested>(_onAccountDeletionRequested);
+
+    // Listen to auth state changes
+    _startAuthStateListener();
+  }
+
+  void _startAuthStateListener() {
+    _authStateSubscription = authUseCases.authStateChanges.listen(
+      (user) {
+        if (user != null) {
+          add(AuthCheckRequested());
+        } else {
+          add(
+            AuthCheckRequested(),
+          ); // This will trigger AuthLoggedOut in _onAuthCheckRequested
+        }
+      },
+      onError: (error) {
+        log('Auth state changes error: $error');
+        add(
+          AuthCheckRequested(),
+        ); // This will trigger AuthError in _onAuthCheckRequested
+      },
+    );
+  }
+
+  @override
+  Future<void> close() {
+    _authStateSubscription?.cancel();
+    return super.close();
   }
 
   Future<void> _onAuthCheckRequested(
@@ -32,7 +66,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthLoggedOut());
       }
     } catch (e) {
-      emit(AuthError(e.toString()));
+      log('Auth check error: $e');
+      final errorMessage = FirebaseAuthErrorHandler.handleException(e);
+      emit(AuthError(errorMessage));
     }
   }
 
@@ -46,9 +82,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         event.email,
         event.password,
       );
+      log(user.toString());
       emit(AuthSuccess(user));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      final errorMessage = FirebaseAuthErrorHandler.handleException(e);
+      emit(AuthError(errorMessage));
     }
   }
 
@@ -65,7 +103,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(AuthSuccess(user));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      final errorMessage = FirebaseAuthErrorHandler.handleException(e);
+      emit(AuthError(errorMessage));
     }
   }
 
@@ -78,7 +117,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authUseCases.signInWithGoogle();
       emit(AuthSuccess(user));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      final errorMessage = FirebaseAuthErrorHandler.handleException(e);
+      emit(AuthError(errorMessage));
     }
   }
 
@@ -91,7 +131,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authUseCases.signInWithPhone(event.phoneNumber);
       emit(AuthSuccess(user));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      final errorMessage = FirebaseAuthErrorHandler.handleException(e);
+      emit(AuthError(errorMessage));
     }
   }
 
@@ -104,7 +145,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authUseCases.signOut();
       emit(AuthLoggedOut());
     } catch (e) {
-      emit(AuthError(e.toString()));
+      final errorMessage = FirebaseAuthErrorHandler.handleException(e);
+      emit(AuthError(errorMessage));
     }
   }
 
@@ -117,7 +159,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authUseCases.sendPasswordResetEmail(event.email);
       emit(PasswordResetSent(event.email));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      final errorMessage = FirebaseAuthErrorHandler.handleException(e);
+      emit(AuthError(errorMessage));
     }
   }
 
@@ -130,7 +173,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authUseCases.updatePassword(event.newPassword);
       emit(AuthSuccess((state as AuthSuccess).user));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      final errorMessage = FirebaseAuthErrorHandler.handleException(e);
+      emit(AuthError(errorMessage));
     }
   }
 
@@ -143,7 +187,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authUseCases.updateProfile(event.user);
       emit(ProfileUpdated(event.user));
     } catch (e) {
-      emit(AuthError(e.toString()));
+      final errorMessage = FirebaseAuthErrorHandler.handleException(e);
+      emit(AuthError(errorMessage));
     }
   }
 
@@ -156,7 +201,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authUseCases.deleteAccount();
       emit(AuthLoggedOut());
     } catch (e) {
-      emit(AuthError(e.toString()));
+      final errorMessage = FirebaseAuthErrorHandler.handleException(e);
+      emit(AuthError(errorMessage));
     }
   }
 }

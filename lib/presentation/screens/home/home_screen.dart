@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_event.dart';
 import '../../bloc/auth/auth_state.dart';
 import '../../widgets/widgets.dart';
+import '../../widgets/user_profile_widget.dart';
+import '../../../core/constants/app_text_styles.dart';
 import '../auth/login_screen.dart';
 import '../settings/settings_screen.dart';
 
@@ -72,8 +77,14 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildWelcomeContent(BuildContext context, user) {
+    final userName = (user.name != null && user.name!.trim().isNotEmpty)
+        ? user.name!.trim()
+        : (user.email != null && user.email!.trim().isNotEmpty)
+        ? user.email!.trim().split('@')[0]
+        : "User";
+    log("user profile image url: ${user.profileImageUrl}");
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -85,54 +96,53 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   children: [
                     CircleAvatar(
-                      radius: 30,
+                      radius: 30.r,
                       backgroundColor: Theme.of(context).primaryColor,
                       backgroundImage: user.profileImageUrl != null
                           ? NetworkImage(user.profileImageUrl!)
                           : null,
                       child: user.profileImageUrl == null
                           ? Text(
-                              user.name?.substring(0, 1).toUpperCase() ?? 'U',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                              userName.substring(0, 1).toUpperCase(),
+                              style: AppTextStyles.headlineLarge.copyWith(
                                 color: Colors.white,
                               ),
                             )
                           : null,
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16.w),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '${'home.welcome'.tr()}, ${user.name ?? 'User'}!',
-                            style: Theme.of(context).textTheme.headlineMedium,
+                            style: AppTextStyles.headlineMedium,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            user.email,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
+                          SizedBox(height: 4.h),
+                          Text(user.email, style: AppTextStyles.bodyMedium),
                         ],
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Text(
                   'Welcome to Goal Mate! Start tracking your goals and achieving your dreams.',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: AppTextStyles.bodyMedium,
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
+
+          // User Profile from Firestore
+          UserProfileWidget(userId: user.id),
+          SizedBox(height: 24.h),
 
           // Quick Actions
-          Text('Quick Actions', style: Theme.of(context).textTheme.titleLarge),
-          const SizedBox(height: 16),
+          Text('Quick Actions', style: AppTextStyles.titleLarge),
+          SizedBox(height: 16.h),
 
           Row(
             children: [
@@ -150,19 +160,16 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.flag,
-                        size: 32,
+                        size: 32.w,
                         color: Theme.of(context).primaryColor,
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Goals',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
+                      SizedBox(height: 8.h),
+                      Text('Goals', style: AppTextStyles.titleMedium),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16.w),
               Expanded(
                 child: AppCard(
                   onTap: () {
@@ -177,21 +184,18 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.trending_up,
-                        size: 32,
+                        size: 32.w,
                         color: Theme.of(context).primaryColor,
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Progress',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
+                      SizedBox(height: 8.h),
+                      Text('Progress', style: AppTextStyles.titleMedium),
                     ],
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
 
           Row(
             children: [
@@ -209,19 +213,16 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.emoji_events,
-                        size: 32,
+                        size: 32.w,
                         color: Theme.of(context).primaryColor,
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Achievements',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
+                      SizedBox(height: 8.h),
+                      Text('Achievements', style: AppTextStyles.titleMedium),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16.w),
               Expanded(
                 child: AppCard(
                   onTap: () {
@@ -236,14 +237,11 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.settings,
-                        size: 32,
+                        size: 32.w,
                         color: Theme.of(context).primaryColor,
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Settings',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
+                      SizedBox(height: 8.h),
+                      Text('Settings', style: AppTextStyles.titleMedium),
                     ],
                   ),
                 ),

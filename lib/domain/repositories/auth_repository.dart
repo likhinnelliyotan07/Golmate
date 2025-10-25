@@ -2,6 +2,7 @@ import '../entities/user_entity.dart';
 
 abstract class AuthRepository {
   Future<UserEntity?> getCurrentUser();
+  Future<UserEntity?> getUserFromFirestore(String userId);
   Future<UserEntity> signInWithEmail(String email, String password);
   Future<UserEntity> signUpWithEmail(
     String email,

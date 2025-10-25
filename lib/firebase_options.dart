@@ -41,48 +41,48 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDFCcC_Q1JKRb_0b6_Ph9vY8nrmoMerI74',
-    appId: '1:283069957521:web:baca975c333098b94dc630',
-    messagingSenderId: '283069957521',
-    projectId: 'goal-mate-20289',
-    authDomain: 'goal-mate-20289.firebaseapp.com',
-    storageBucket: 'goal-mate-20289.firebasestorage.app',
-    measurementId: 'G-PGWSTDY7SQ',
+    apiKey: 'AIzaSyBTbfmjLrwWqhHfSzo7zwr6EOLEDZdUtzw',
+    appId: '1:264636968531:web:9213311cf199fb34aee0a6',
+    messagingSenderId: '264636968531',
+    projectId: 'goal-mate-9360f',
+    authDomain: 'goal-mate-9360f.firebaseapp.com',
+    storageBucket: 'goal-mate-9360f.firebasestorage.app',
+    measurementId: 'G-YN8WQV1GQM',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAGG0JS9rSucTvgBI33-zy3cgKrBAIb4O0',
-    appId: '1:283069957521:android:7b473b9e983945b44dc630',
-    messagingSenderId: '283069957521',
-    projectId: 'goal-mate-20289',
-    storageBucket: 'goal-mate-20289.firebasestorage.app',
+    apiKey: 'AIzaSyBtuzLEoxC0NFfjZ6Oka9ggEyPdCfNWNB0',
+    appId: '1:264636968531:android:5be2241190dce4e5aee0a6',
+    messagingSenderId: '264636968531',
+    projectId: 'goal-mate-9360f',
+    storageBucket: 'goal-mate-9360f.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCHEv4pTFPqdREcL9J0bk4YC3SGFsMGa00',
-    appId: '1:283069957521:ios:7c6900cfce295ca24dc630',
-    messagingSenderId: '283069957521',
-    projectId: 'goal-mate-20289',
-    storageBucket: 'goal-mate-20289.firebasestorage.app',
+    apiKey: 'AIzaSyD67rnzk7zFWbYHIgTZySqsFcEWNH_Zii0',
+    appId: '1:264636968531:ios:824917d2bbdd4a94aee0a6',
+    messagingSenderId: '264636968531',
+    projectId: 'goal-mate-9360f',
+    storageBucket: 'goal-mate-9360f.firebasestorage.app',
     iosBundleId: 'com.example.goalMate',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCHEv4pTFPqdREcL9J0bk4YC3SGFsMGa00',
-    appId: '1:283069957521:ios:7c6900cfce295ca24dc630',
-    messagingSenderId: '283069957521',
-    projectId: 'goal-mate-20289',
-    storageBucket: 'goal-mate-20289.firebasestorage.app',
+    apiKey: 'AIzaSyD67rnzk7zFWbYHIgTZySqsFcEWNH_Zii0',
+    appId: '1:264636968531:ios:824917d2bbdd4a94aee0a6',
+    messagingSenderId: '264636968531',
+    projectId: 'goal-mate-9360f',
+    storageBucket: 'goal-mate-9360f.firebasestorage.app',
     iosBundleId: 'com.example.goalMate',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDFCcC_Q1JKRb_0b6_Ph9vY8nrmoMerI74',
-    appId: '1:283069957521:web:3ff2ff9c7dce5a2c4dc630',
-    messagingSenderId: '283069957521',
-    projectId: 'goal-mate-20289',
-    authDomain: 'goal-mate-20289.firebaseapp.com',
-    storageBucket: 'goal-mate-20289.firebasestorage.app',
-    measurementId: 'G-C9LGCRB7YV',
+    apiKey: 'AIzaSyBTbfmjLrwWqhHfSzo7zwr6EOLEDZdUtzw',
+    appId: '1:264636968531:web:d1e2689d1a250af7aee0a6',
+    messagingSenderId: '264636968531',
+    projectId: 'goal-mate-9360f',
+    authDomain: 'goal-mate-9360f.firebaseapp.com',
+    storageBucket: 'goal-mate-9360f.firebasestorage.app',
+    measurementId: 'G-HQ96KE5WWG',
   );
 }

@@ -9,7 +9,7 @@ class AppTheme {
       brightness: Brightness.light,
       colorScheme: AppColors.lightColorScheme,
       textTheme: _buildTextTheme(false),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: true,
         backgroundColor: AppColors.backgroundLight,
